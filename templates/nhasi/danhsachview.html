@@ -1,0 +1,544 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Quản lý phòng khám</title>
+
+    <!-- Custom fonts for this template-->
+    <!-- Custom fonts for this template-->
+    <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+    <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %} " rel="stylesheet" type="text/css">
+    <link href="{% static 'css/jquery-ui.css' %} " rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <!-- Custom styles for this template-->
+    <link href="{% static 'css/all.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+
+</head>
+
+<body id="page-top">
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion toggled" id="accordionSidebar">
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+                <div class="sidebar-brand-text mx-3">Dental Clinic <sup>v.1.0</sup></div>
+            </a>
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Chức năng
+            </div>
+            <!-- Nav Item - Tables -->
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'nhasi' %}">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Đăng ký khám</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'danhSach' %}">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Danh sách đăng ký</span>
+                </a>
+            </li>
+            <!-- Nav Item - Tables -->
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'lichLamViec' %}">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>Lịch làm việc</span>
+                </a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+        </ul>
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">
+                        <!-- Nav Item - User Information -->
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                                        <div style="
+                                    font-size: 15px;
+                                ">Xin chào <b>{{ user.username }}</b> </div>
+                                    </span>
+                            </a>
+                            <!-- Dropdown - User Information -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i> Thoát khỏi hệ thống
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-xl-12 col-md-12 mb-12">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                </div>
+                                <div class="card-body">
+                                    {% if benh_nhan %}
+                                    <table id="table_id" class="display">
+                                        <thead>
+                                            <tr>
+                                                <th width="5%">Mã số</th>
+                                                <th width="20%">Bệnh nhân</th>
+                                                <th width="15%">Thời gian</th>
+                                                <th width="5%">Ngày</th>
+                                                <th width="20%">Bác sĩ</th>
+                                                <th width="20%">Nội dung điều trị</th>
+                                                <th width="25%">&nbsp;</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for data in benh_nhan %}
+                                            <tr>
+                                                <td>{{data.ma_ho_so}}</td>
+                                                <!-- <td>{{data.ma_ho_so}}</td> -->
+                                                <td>{{data.ho_benh_nhan}} {{data.chu_lot_benh_nhan}} {{data.ten_bn}}</td>
+                                                <td>{{data.thoi_gian_kham}}</td>
+                                                <td>{{data.kham_tu_ngay|date:'d/m/Y'}}</td>
+                                                <td>{{data.ho_ten_nha_si}}</td>
+                                                <td>{{data.trieu_chung}}</td>
+                                                <td></td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                    {% else %}
+                                    <p style="text-align: center;">Chưa có dữ liệu</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a class="scroll-to-top rounded" href="#page-top">
+                    <i class="fas fa-angle-up"></i>
+                </a>
+
+                <!-- Logout Modal-->
+                <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Thoát khỏi hệ thống?</h5>
+                                <button class="close" type="button" data-dismiss="modal" aria-label="Đóng">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">&nbsp;
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" type="button" data-dismiss="modal">Ở lại</button>
+                                <a class="btn btn-primary" href="javascript:{document.getElementById('logout').submit()}">Thoát</a>
+                                <form action="{% url 'logout' %}" method="POST" id="logout">
+                                    {% csrf_token %}
+                                    <input type="hidden">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <form id="form1">
+                        <div id="dvContainer" hidden>
+
+                            <table style="width : 100%;padding-top:5%;">
+                                <tbody>
+                                    <tr>
+                                        <td colspan="8"><img style="width: 20%;" src="{% static '/img/logo.jpg' %}" alt=""></td>
+                                    </tr>
+                                    <tr style="text-align: center;">
+                                        <td colspan="8" style="padding-bottom: 20px; font-size: 20px"><b>PHIẾU KHÁM TƯ VẤN VÀ ĐIỀU TRỊ </b></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="8">Mã hồ sơ: <span id="ma_ho_so_pr"></span> </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">Họ và tên: <span id="ho_ten_pr"></span> </td>
+                                        <td colspan="2">Ngày sinh: <span id="ngay_sinh_pr"></span></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>|<span id="gioi_tinh_pr"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="8">Địa chỉ: <span id="dia_chi_pr"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="8">Số điện thoại: <span id="so_dien_thoai_pr"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">Ngày khám bệnh: <span id="ngay_kham_pr"></span></td>
+                                        <td colspan="4">Bác sĩ: <span id="bac_si_pr"></span> </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="8">Cảnh báo sức khoẻ/tiền sử: <span id="cb_sk_pr"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="8">Cảnh báo dị ứng, phản ứng: <span id="du_pr"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="8">Triệu chứng yêu cầu khám: <span id="tc_pr"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="8" style="width: 70%;padding-top: 30px;padding-bottom: 30px;text-align: center;"><img src="{%static 'img/rang.jpg'%}" style="width: 70%;"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table style="width: 100%; border: 1px solid #2516f3; border-collapse:collapse; text-align: center;">
+                                <tbody>
+                                    <tr>
+                                        <td style="	border:1px solid #4878fa; width:10%">Vị trí răng</td>
+                                        <td style="	border:1px solid #4878fa; width:40%">Chẩn đoán</td>
+                                        <td style="	border:1px solid #4878fa; width:10%">Chi phí</td>
+                                        <td style="	border:1px solid #4878fa; width:10%">Chi phí giảm</td>
+                                        <td style="	border:1px solid #4878fa; width:10%">Thành tiền</td>
+                                    </tr>
+                                    <tr style=" border-bottom: 1px solid 080808; width: 10px; height: 50px ">
+                                        <td style="	border:1px solid #4878fa;height: 30px;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                    </tr>
+                                    <tr style=" border-bottom: 1px solid 080808; width: 10px; height: 50px  ">
+                                        <td style="	border:1px solid #4878fa;height: 30px;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                    </tr>
+                                    <tr style=" border-bottom: 1px solid 080808; width: 10px ; height: 50px ">
+                                        <td style="	border:1px solid #4878fa;height: 30px;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                    </tr>
+                                    <tr style=" border-bottom: 1px solid 080808; width: 10px; height: 50px  ">
+                                        <td style="	border:1px solid #4878fa;height: 30px;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                    </tr>
+                                    <tr style=" border-bottom: 1px solid 080808; width: 10px ; height: 50px ">
+                                        <td style="	border:1px solid #4878fa;height: 30px;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                    </tr>
+                                    <tr style=" border-bottom: 1px solid 080808; width: 10px ; height: 50px ">
+                                        <td style="	border:1px solid #4878fa;height: 30px;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                    </tr>
+                                    <tr style=" border-bottom: 1px solid 080808; width: 10px ; height: 50px ">
+                                        <td style="	border:1px solid #4878fa;height: 30px;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                    </tr>
+                                    <tr style=" border-bottom: 1px solid 080808; width: 10px; height: 50px  ">
+                                        <td style="	border:1px solid #4878fa;height: 30px;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                    </tr>
+                                    <tr style=" border-bottom: 1px solid 080808; width: 10px; height: 50px  ">
+                                        <td style="	border:1px solid #4878fa;height: 30px;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <p></p>
+                            <br>
+                            <br>
+                            <table style="width: 100%; border: 1px solid #2516f3; border-collapse:collapse; text-align: center;">
+                                <tbody>
+                                    <tr>
+                                        <td style="	border:1px solid #4878fa; width:10%">Vị trí răng</td>
+                                        <td style="	border:1px solid #4878fa; width:40%">Chẩn đoán</td>
+                                        <td style="	border:1px solid #4878fa; width:10%">Chi phí</td>
+                                        <td style="	border:1px solid #4878fa; width:10%">Chi phí giảm</td>
+                                        <td style="	border:1px solid #4878fa; width:10%">Thành tiền</td>
+                                    </tr>
+                                    <tr style=" border-bottom: 1px solid 080808; width: 10px; height: 50px ">
+                                        <td style="	border:1px solid #4878fa;height: 30px;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                    </tr>
+                                    <tr style=" border-bottom: 1px solid 080808; width: 10px; height: 50px  ">
+                                        <td style="	border:1px solid #4878fa;height: 30px;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                    </tr>
+                                    <tr style=" border-bottom: 1px solid 080808; width: 10px ; height: 50px ">
+                                        <td style="	border:1px solid #4878fa;height: 30px;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                    </tr>
+                                    <tr style=" border-bottom: 1px solid 080808; width: 10px; height: 50px  ">
+                                        <td style="	border:1px solid #4878fa;height: 30px;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                    </tr>
+                                    <tr style=" border-bottom: 1px solid 080808; width: 10px ; height: 50px ">
+                                        <td style="	border:1px solid #4878fa;height: 30px;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                    </tr>
+                                    <tr style=" border-bottom: 1px solid 080808; width: 10px ; height: 50px ">
+                                        <td style="	border:1px solid #4878fa;height: 30px;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                    </tr>
+                                    <tr style=" border-bottom: 1px solid 080808; width: 10px ; height: 50px ">
+                                        <td style="	border:1px solid #4878fa;height: 30px;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                    </tr>
+                                    <tr style=" border-bottom: 1px solid 080808; width: 10px; height: 50px  ">
+                                        <td style="	border:1px solid #4878fa;height: 30px;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                    </tr>
+                                    <tr style=" border-bottom: 1px solid 080808; width: 10px ; height: 50px ">
+                                        <td style="	border:1px solid #4878fa;height: 30px;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                    </tr>
+                                    <tr style=" border-bottom: 1px solid 080808; width: 10px ; height: 50px ">
+                                        <td style="	border:1px solid #4878fa;height: 30px;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                    </tr>
+                                    <tr style=" border-bottom: 1px solid 080808; width: 10px ; height: 50px ">
+                                        <td style="	border:1px solid #4878fa;height: 30px;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                    </tr>
+                                    <tr style=" border-bottom: 1px solid 080808; width: 10px; height: 50px  ">
+                                        <td style="	border:1px solid #4878fa;height: 30px;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                    </tr>
+                                    <tr style=" border-bottom: 1px solid 080808; width: 10px ; height: 50px ">
+                                        <td style="	border:1px solid #4878fa;height: 30px;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                        <td style="	border:1px solid #4878fa;"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Bootstrap core JavaScript-->
+                <script src="{% static 'js/jquery-1.10.2.js' %}"></script>
+
+                <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+                <script src="{% static 'js/jquery-ui.js' %}"></script>
+                <!-- Core plugin JavaScript-->
+                <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+                <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+
+                <!-- Custom scripts for all pages-->
+                <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
+                <!-- link----------------- -->
+</body>
+<script>
+    $(document).ready(function() {
+        var tableBenhNhan = $('#table_id').DataTable({
+            "language": {
+                "lengthMenu": "Hiển thị _MENU_ Bệnh nhân",
+                "zeroRecords": "Không có dữ liệu - Xin lỗi",
+                "info": "Trang _PAGE_ của _PAGES_ trang",
+                "infoEmpty": "Không có dữ liệu",
+                "infoFiltered": "(Lọc từ _MAX_ tổng số bản ghi)",
+                "search": "Gõ nội dung cần tìm",
+                "paginate": {
+                    "previous": "Trang trước",
+                    "next": "Trang sau",
+                }
+            },
+            "columnDefs": [{
+                "targets": -1,
+                "data": null,
+                "defaultContent": '<button class="btn-view" type="button">in</button> &nbsp; &nbsp;' + '<button class="btn-delete"  type="button">xoá</button>'
+            }]
+        });
+
+        $('#table_id tbody').on('mouseover', '.btn-view', function() {
+            var data1 = tableBenhNhan.row($(this).parents('tr')).data();
+            duLieuBenhNhan(data1[0])
+        });
+
+        $('#table_id tbody').on('click', '.btn-view', function() {
+
+            var divContents = $("#dvContainer").html();
+            var printWindow = window.open('', '', 'height=400,width=800');
+            printWindow.document.write('<html><head><title></title>');
+            printWindow.document.write('</head><body >');
+            printWindow.document.write(divContents);
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            printWindow.print();
+
+        });
+
+        // Handle click on "Delete" button
+        $('#table_id tbody').on('click', '.btn-delete', function(e) {
+            var data2 = tableBenhNhan.row($(this).parents('tr')).data();
+            var r = confirm("Bạn có chắc chắn muốn xoá bệnh nhân ra khỏi danh sách ");
+            if (r == true) {
+                alert()
+                xoaBenhNhan(data2[0])
+                location.reload();
+            }
+        });
+
+        function xoaBenhNhan(maSo) {
+            $.ajax({
+                type: "GET",
+                url: "ajax_xoaBenhNhan",
+                data: {
+                    'ma_so': maSo,
+                },
+                success: function(parsedData) {
+                    if (obj[0]["fields"]["isDel"] == 1) {
+                        alert("Xoá thông tin thành công")
+                    } else {
+                        alert("Xoá thông tin không thành công")
+                    }
+                }
+            });
+        }
+
+        function duLieuBenhNhan(maSo) {
+            $.ajax({
+                type: "GET",
+                url: "ajax_inBenhNhan",
+                data: {
+                    'ma_so': maSo,
+                },
+                success: function(parsedData) {
+                    var obj = JSON.parse(parsedData);
+                    ho = obj[0]["fields"]["ho_benh_nhan"]
+                    tenDem = obj[0]["fields"]["chu_lot_benh_nhan"]
+                    ten = obj[0]["fields"]["ten_bn"]
+                    hoTenBenhNhan = ho + " " + tenDem + " " + ten
+                    date = obj[0]["fields"]["ngay_sinh_benh_nhan"]
+                    var dateParts = date.split("-");
+                    ngaySinh = dateParts[2] + "/" + dateParts[1] + "/" + dateParts[0]
+                    gt = obj[0]["fields"]["gioi_tinh_benh_nhan"]
+                    if (gt == 1) {
+                        gioiTinh = "Nam"
+                    } else {
+                        gioiTinh = "Nữ"
+                    }
+                    diaChi = obj[0]["fields"]["dia_chi"]
+                    soDienThoai = obj[0]["fields"]["so_dien_thoai"]
+                    ngayKham = obj[0]["fields"]["thoi_gian_kham"]
+                    bacSi = obj[0]["fields"]["ho_ten_nha_si"]
+                    canhBao = obj[0]["fields"]["canh_bao_suc_khoe"]
+                    diUng = obj[0]["fields"]["di_ung"]
+                    trieuChung = obj[0]["fields"]["trieu_chung"]
+                    maHoSo = obj[0]["fields"]["ma_ho_so"]
+
+                    dateTN = obj[0]["fields"]["kham_tu_ngay"]
+                    var datePartsTN = dateTN.split("-");
+                    ngayKham = datePartsTN[2] + "/" + datePartsTN[1] + "/" + datePartsTN[0]
+
+                    document.getElementById("ho_ten_pr").innerHTML = "<b>" + hoTenBenhNhan + "</b>";
+                    document.getElementById("ngay_sinh_pr").innerHTML = ngaySinh;
+                    document.getElementById("gioi_tinh_pr").innerHTML = gioiTinh;
+                    document.getElementById("dia_chi_pr").innerHTML = diaChi;
+                    document.getElementById("so_dien_thoai_pr").innerHTML = soDienThoai;
+                    document.getElementById("ngay_kham_pr").innerHTML = ngayKham;
+                    document.getElementById("bac_si_pr").innerHTML = bacSi;
+                    document.getElementById("cb_sk_pr").innerHTML = canhBao;
+                    document.getElementById("du_pr").innerHTML = diUng;
+                    document.getElementById("tc_pr").innerHTML = trieuChung;
+                    document.getElementById("ma_ho_so_pr").innerHTML = "<b>" + maHoSo + "</b>";
+
+                }
+            });
+        }
+
+    });
+
+    // lấy ngày từ date picker
+    // Handle click on "View" button
+</script>
+
+</html>

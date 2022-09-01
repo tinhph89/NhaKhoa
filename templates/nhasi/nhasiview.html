@@ -1,0 +1,849 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>dental clinic</title>
+        <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+        <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %} " rel="stylesheet" type="text/css">
+        <link href="{% static 'css/jquery-ui.css' %} " rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+        <link href="{% static 'css/all.min.css' %}" rel="stylesheet">
+        <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
+        <link href="{% static 'css/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+        <style>
+            .modal-dialog {
+                max-width: 90%;
+            }
+            .scrollbox {
+                height: 200px;
+                overflow-y: scroll;
+            }
+
+            table.GeneratedTable {
+                width: 100%;
+                background-color: #ffffff;
+                border-collapse: collapse;
+                border-width: 2px;
+                border-color: #3c3c20;
+                border-style: solid;
+                color: #000000;
+              }
+              tr.highlight td {padding-top: 10px; padding-bottom:10px}
+              table.GeneratedTable td, table.GeneratedTable th {
+                 
+                border-width: 2px;
+                border-color: #3c3c20;
+                border-style: solid;
+                padding: 2px;
+              }
+            .demo {
+                border:1px solid #C0C0C0;
+                border-collapse:collapse;
+                padding:5px;
+            }
+            .demo th {
+                border:1px solid #C0C0C0;
+                padding:5px;
+                background:#F0F0F0;
+            }
+            .demo td {
+                border:1px solid #C0C0C0;
+                padding:5px;
+            }
+        </style>
+    </head>
+
+    <body id="page-top">
+        <!-- Page Wrapper -->
+        <div id="wrapper">
+            <!-- Sidebar -->
+            <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion toggled" id="accordionSidebar">
+                <!-- Sidebar - Brand -->
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+                    <div class="sidebar-brand-text mx-3">Dental Clinic <sup>v.1.0</sup></div>
+                </a>
+                <!-- Divider -->
+                <hr class="sidebar-divider my-0">
+                <!-- Divider -->
+                <hr class="sidebar-divider">
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    Chức năng
+                </div>
+                <!-- Nav Item - Tables -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'nhasi' %}">
+                        <i class="fas fa-fw fa-table"></i>
+                        <span>Đăng ký khám</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'danhSach' %}">
+                        <i class="fas fa-fw fa-table"></i>
+                        <span>Danh sách đăng ký</span>
+                    </a>
+                </li>
+                <!-- Nav Item - Tables -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'lichLamViec' %}">
+                        <i class="fas fa-fw fa-chart-area"></i>
+                        <span>Lịch làm việc</span>
+                    </a>
+                </li>
+
+                <!-- Divider -->
+                <hr class="sidebar-divider d-none d-md-block">
+
+                <!-- Sidebar Toggler (Sidebar) -->
+                <div class="text-center d-none d-md-inline">
+                    <button class="rounded-circle border-0" id="sidebarToggle"></button>
+                </div>
+            </ul>
+            <div id="content-wrapper" class="d-flex flex-column">
+                <!-- Main Content -->
+                <div id="content">
+                    <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <!-- Topbar Navbar -->
+                        <ul class="navbar-nav ml-auto">
+                            <!-- Nav Item - User Information -->
+                            <li class="nav-item dropdown no-arrow">
+                                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                                        <div style=" font-size: 15px;">Xin chào <b>{{user.username }}</b> </div>
+                                    </span>
+                                </a>
+                                <!-- Dropdown - User Information -->
+                                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                    aria-labelledby="userDropdown">
+                                    
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i> Thoát khỏi hệ thống
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+
+                    </nav>
+                    <!-- Begin Page Content ------------------------------------------------------->
+                    <div class="container-fluid">
+                        <!-- <form action="{% url 'luuThongTinBenhNhan' %}" method="GET" autocomplete="off" > -->
+                        <!-- {% csrf_token %} -->
+                        <div class="row">
+                            <div class="col-xl-12 col-md-12 mb-12">
+                                <div class="card border-left-primary shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="form-row align-items-center">
+                                            <div class="form-group col-md-1">
+
+                                            </div>
+                                            <div class="form-group col-md-3">
+                                                <label for="maHoSo" style="color: #060606;font-weight: bold;">Mã hồ sơ</label>
+                                                <div class='input-group has-validation'>
+                                                    <input type='text' class="form-control" name="maHoSo" id="maHoSo" value="{{mas_so_default}}" required />
+                                                    <a href="#" data-toggle="modal" data-target="#timBenhNhan">
+                                                        <button type="button" style="height: 100%;"><i name="timBenhNhan" class="fa fa-search"></i></button>
+                                                    </a>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group col-md-1">
+                                                <br>
+                                                <!-- <button type="button" id="themHoSo" name="themHoSo" class="btn btn-primary btn-md">Thêm</button> -->
+                                            </div>
+                                            <div class="form-group col-md-2">
+                                                <label for="ho" style="color: #060606;font-weight: bold;">Họ</label>
+                                                <div class='input-group date'>
+                                                    <input type='text' class="form-control" name="ho" id="ho" required />
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-2">
+                                                <label for="tenDem" style="color: #060606;font-weight: bold;">Chữ
+                                                    lót</label>
+                                                <div class='input-group date'>
+                                                    <input type='text' class="form-control" name="tenDem" id="tenDem" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-2">
+                                                <label for="ten" style="color: #060606;font-weight: bold;">Tên</label>
+                                                <div class='input-group date'>
+                                                    <input type='text' class="form-control" name="ten" id="ten" required />
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="form-row align-items-center">
+                                            <div class="form-group col-md-1">
+                                            </div>
+                                            <div class="form-group col-md-3">
+                                                <label for="ngaySinh" style="color: #060606;font-weight: bold;">Ngày sinh</label>
+                                                <div class='input-group date'>
+                                                    <input type='text' class="form-control" name="ngaySinh" id="ngaySinh" required />
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group col-md-1">
+                                                <br>
+                                                <!-- <button type="button" id="themHoSo" name="themHoSo" class="btn btn-primary btn-md">Giới tính</button> -->
+                                            </div>
+                                            <div class="form-group col-md-2">
+                                                <label for="gioiTinh" style="color: #060606;font-weight: bold;">Giới tính</label>
+                                                <div class='input-group date'>
+                                                    <select class="form-control" id="gioiTinh" name="gioiTinh" required>
+                                                        <option value="">-Chọn-</option>
+                                                        <option value="1">Nam</option>
+                                                        <option value="0">Nữ</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <label for="soDienThoai" style="color: #060606;font-weight: bold;">Số điện thoại</label>
+                                                <div class='input-group date'>
+                                                    <input type='text' class="form-control" name="soDienThoai" id="soDienThoai" required />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row align-items-center">
+                                            <div class="form-group col-md-1">
+
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <label for="diaChi" style="color: #060606;font-weight: bold;">Địa chỉ</label>
+                                                <div class='input-group date'>
+                                                    <input type='text' class="form-control" name="diaChi" id="diaChi" required="" required />
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-3">
+                                                <label for="yeuCauBacSi" style="color: #060606;font-weight: bold;">Yêu cầu bác sĩ</label>
+                                                <div class='input-group date'>
+                                                    <input type='text' class="form-control" name="yeuCauBacSi" id="yeuCauBacSi" readonly required />
+                                                    <a href="#" data-toggle="modal" data-target="#timBacSy">
+                                                        <button type="button" style="height: 100%;"><i class="fa fa-search"></i></button>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-3">
+                                                <label for="quyThoiGian" style="color: #060606;font-weight: bold;">Thời gian hẹn </label>
+                                                <div class='input-group date'>
+                                                    <input type='text' class="form-control" name="tuNgay" id="tuNgay" placeholder="Ngày khám" required /> &nbsp;&nbsp;
+                                                    <select class="form-control" id="thoiGianKham" name="thoiGianKham" required>
+
+                                                        <option value="">-Chọn-</option>
+                                                        {%for data in thoi_gian_choices%}
+                                                        <option value="{{data.thoi_gian}}" class="font-size:10px">
+                                                            {{data.thoi_gian}}</option>
+                                                        {%endfor%}
+
+                                                    </select>
+                                                    <!-- <input type='text' class="form-control" name="denNgay" id="denNgay" placeholder="Đến ngày" required /> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row align-items-center">
+                                            <div class="form-group col-md-1">
+                                            </div>
+                                            <div class="form-group col-md-10">
+                                                <label for="ghiChu" style="color: #060606;font-weight: bold;">Ghi
+                                                    chú</label>
+                                                <div class='input-group date'>
+                                                    <input type='text' class="form-control" name="ghiChu" id="ghiChu"
+                                                        required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div id="tien_su" class="form-row align-items-center">
+
+                                        <div class="form-group col-md-1">
+
+                                        </div>
+                                        <div class="form-group col-md-3" id="cbsk">
+                                            <label for="canhBaoSucKhoe" style="color: #060606;font-weight: bold;">CẢNH
+                                                BÁO SỨC KHOẺ</label>
+                                            <div class="scrollbox" style="color: #060606;">
+                                                {% if canh_bao %}
+                                                {% for datacb in canh_bao %}
+                                                <input type="checkbox" value="{{datacb.ma_so_canh_bao}}"
+                                                    name="{{datacb.noi_dung}}"
+                                                    id="{{datacb.ma_so_canh_bao}}" />&nbsp;{{datacb.noi_dung}}<br>
+                                                {% endfor %}
+                                                {% endif %}
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-md-4"  id="diung">
+                                            <label for="diUng" style="color: #060606;font-weight: bold;">DỊ ỨNG</label>
+                                            <div class="scrollbox" style="color: #060606;">
+                                                {% if di_ung %}
+                                                {% for datada in di_ung %}
+                                                <input type="checkbox" value="{{datada.ma_so_di_ung}}"
+                                                    name='{{datada.noi_dung}}'
+                                                    id='{{datada.ma_so_di_ung}}' />&nbsp;{{datada.noi_dung}}<br>
+                                                {% endfor %}
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-4" id="trieuchung">
+                                            <label for="trieuChung" style="color: #060606;font-weight: bold;">TRIỆU CHỨNG</label>
+
+                                            <div class="scrollbox" style="color: #060606;">
+                                                {% if trieu_chung %}
+                                                {% for datatc in trieu_chung %}
+                                                <input class="trieu_chung" type="checkbox"
+                                                    value="{{datatc.ma_so_trieu_chung}}" name="{{datatc.noi_dung}}"
+                                                    id="{{datatc.ma_so_trieu_chung}}" />&nbsp;{{datatc.noi_dung}}<br>
+                                                {% endfor %}
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="form-row align-items-center">
+                                        <div class="form-group col-md-2">
+                                        </div>
+                                        <div class="form-group col-md-1">
+                                        </div>
+                                      
+                                        <div class="form-group col-md-2">
+                                            <button type="submit" id="dangKyKhamBenh" name="dangKyKhamBenh"class="btn btn-primary btn-md">Lưu thông tin</button>
+                                        </div>
+                                        <div class="form-group col-md-2">
+                                            <button type="button" id="btnInPhieu" name="btnInPhieu"  class="btn btn-primary btn-md">In phiếu khám</button>
+                                        </div>
+                                        <div class="form-group col-md-2">
+                                            <button type="button" id="btnLamMoi" name="btnLamMoi" class="btn btn-primary btn-md">Làm mới</button>
+                                        </div>
+                                        <div class="form-group col-md-1">
+                                        </div>
+                                        <div class="form-group col-md-1">
+                                        </div>
+
+                                        <input type="hidden" id ="idBenhNhanServer" name ="idBenhNhanServer" value="">
+                                        <input type="hidden" value="" id="arr_tc" name="arr_tc">
+                                        <input type="hidden" name="tsbenh" id="tsbenh" value="">
+                                        <input type="hidden" name="nd_canh_bao" id="nd_canh_bao" value="">
+                                        <input type="hidden" name="nd_di_ung" id="nd_di_ung" value="">
+                                        <input type="hidden" name="nd_trieu_chung" id="nd_trieu_chung" value="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Inquiry Modal -->
+                <div class="modal fade" id="timBenhNhan" role="dialog">
+                    <div class="modal-dialog" style="width: 70%;">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 style="color: #446ad8;" class="modal-title" id="inquiryModalLabel">Tìm kiếm bệnh nhân - Nhấn phím f5 đểm xem danh sách bệnh nhân mới nhất</h5>
+                                <button type="button" class="close" data-dismiss="modal">
+                                    <span>&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                {% if benh_nhan %}
+                                <table id="table_benhNhan" class="display" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th width="5%" style="text-align: center;">STT</th>
+                                            <th width="20%" style="text-align: center;">Mã số</th>
+                                            <th width="40%" style="text-align: center;">Họ tên</th>
+                                            <th width="30%" style="text-align: center;">Ngày Sinh</th>
+                                            <th width="5%">&nbsp;</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        {% for data in benh_nhan %}
+                                        <tr>
+                                            <td style="text-align: center;">{{forloop.counter}}</td>
+                                            <td style="text-align: center;">{{data.ma_ho_so}}</td>
+                                            <td>{{data.ho_benh_nhan}} {{data.chu_lot_benh_nhan}} {{data.ten_bn}}
+                                            </td>
+                                            <td>{{data.ngay_sinh_benh_nhan|date:'d/m/Y'}}</td>
+                                            <td></td>
+                                            <!-- <td><button id="chonBenhNhan" name = "chonBenhNhan" value="{{data.id}}">chọn </button></td> -->
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                {% else %}
+                                <p style="text-align: center;">Chưa có dữ liệu</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="timBacSy" role="dialog">
+                    <div class="modal-dialog" style="width: 50%;">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 style="color: #446ad8;" class="modal-title" id="inquiryModalLabel">Tìm kiếm bác sĩ</h5>
+                                <input type="hidden" value="" id="hiden_id_bs" name=="hiden_id_bs">
+                                <button type="button" class="close" data-dismiss="modal">
+                                    <span>&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                {% if nha_si %}
+                                <table id="table_bacSi" class="display" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th width="5%" style="text-align: center;">STT</th>
+                                            <th width="85%" style="text-align: center;">Bác sĩ</th>
+                                            <th width="10%">&nbsp;</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for datans in nha_si %}
+                                        <tr>
+                                            <td width="5%" style="text-align: center;">{{datans.ma_so_nha_si}}</td>
+                                            <td width="85%" style="text-align: left;">{{datans.ho_ten}}</td>
+                                            <td width="10%" style="text-align: center;"><a href="#">Chọn </a></td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                {% else %}
+                                <p style="text-align: center;">Chưa có dữ liệu </p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Footer -->
+                <footer class="sticky-footer bg-white">
+                    <div class="container my-auto">
+                        <div class="copyright text-center my-auto">
+                            <!-- <span>Copyright &copy; Nha</span><br> -->
+                        </div>
+                    </div>
+                </footer>
+            </div>
+            <!-- Scroll to Top Button-->
+            <a class="scroll-to-top rounded" href="#page-top">
+                <i class="fas fa-angle-up"></i>
+            </a>
+            <!-- Logout Modal-->
+            <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document" style="width: 50%;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Thoát khỏi hệ thống</h5>
+                            <button class="close" type="button" data-dismiss="modal" aria-label="Đóng">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">Hãy kiểm tra lại thông tin trước khi thoát hệ thống
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Ở lại</button>
+                            <a class="btn btn-primary"
+                                href="javascript:{document.getElementById('logout').submit()}">Thoát</a>
+                            <form action="{% url 'logout' %}" method="POST" id="logout">
+                                {% csrf_token %}
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <form id="form1">
+                <div id="dvContainer" hidden>
+                    
+                    <table style="width : 100%;padding-top:5%;">
+                        <tbody>
+                            <tr><td colspan="8"><img style="width: 20%;" src="{% static '/img/logo.jpg' %}" alt=""></td></tr>
+                          <tr style="text-align: center;">
+                            <td colspan="8" style="padding-bottom: 20px; font-size: 20px"><b>PHIẾU KHÁM TƯ VẤN VÀ ĐIỀU TRỊ </b></td>
+                          </tr>
+                          <tr>
+                            <td colspan="8">Mã hồ sơ: <span id="ma_ho_so_pr"></span> </td>
+                           
+                          </tr>
+                          <tr>
+                            <td colspan="3">Họ và tên: <span id="ho_ten_pr"></span> </td>
+                            <td colspan="2">Ngày sinh: <span id="ngay_sinh_pr"></span></td>
+                            <td></td>
+                            <td></td>
+                            <td>|<span id="gioi_tinh_pr"></span></td>
+                          </tr>
+                          <tr>
+                            <td colspan="8">Địa chỉ: <span id="dia_chi_pr"></span></td>
+                          </tr>
+                          <tr>
+                            <td colspan="8">Số điện thoại: <span id="so_dien_thoai_pr"></span></td>
+                          </tr>
+                          <tr>
+                            <td colspan="3">Ngày khám bệnh: <span id="ngay_kham_pr"></span></td>
+                            <td colspan="4">Bác sĩ: <span id="bac_si_pr"></span> </td>
+                          </tr>
+                          <tr>
+                            <td colspan="8">Cảnh báo sức khoẻ/tiền sử: <span id="cb_sk_pr"></span></td>
+                          </tr>
+                          <tr>
+                            <td colspan="8">Cảnh báo dị ứng, phản ứng: <span id="du_pr"></span></td>
+                          </tr>
+                          <tr>
+                            <td colspan="8">Triệu chứng yêu cầu khám: <span id="tc_pr"></span></td>
+                          </tr>
+                          <tr>
+                            <td colspan="8" style="width: 70%;padding-top: 30px;padding-bottom: 30px;text-align: center;"><img src="{%static 'img/rang.jpg'%}" style="width: 70%;"></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <table style="width: 100%; border: 1px solid #2516f3; border-collapse:collapse; text-align: center;" >
+                        <tbody>
+                        <tr>
+                            <td style="	border:1px solid #4878fa; width:10%" >Vị trí răng</td>
+                            <td style="	border:1px solid #4878fa; width:40%">Chẩn đoán</td>
+                            <td style="	border:1px solid #4878fa; width:10%">Chi phí</td>
+                            <td style="	border:1px solid #4878fa; width:10%" >Chi phí giảm</td>
+                            <td style="	border:1px solid #4878fa; width:10%">Thành tiền</td>
+                        </tr>
+                        <tr style=" border-bottom: 1px solid 080808; width: 10px; height: 50px "><td style="	border:1px solid #4878fa;height: 30px;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td></tr>
+                        <tr style=" border-bottom: 1px solid 080808; width: 10px; height: 50px  "><td style="	border:1px solid #4878fa;height: 30px;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td></tr>
+                        <tr style=" border-bottom: 1px solid 080808; width: 10px ; height: 50px "><td style="	border:1px solid #4878fa;height: 30px;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td></tr>
+                        <tr style=" border-bottom: 1px solid 080808; width: 10px; height: 50px  "><td style="	border:1px solid #4878fa;height: 30px;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td></tr>
+                        <tr style=" border-bottom: 1px solid 080808; width: 10px ; height: 50px "><td style="	border:1px solid #4878fa;height: 30px;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td></tr>
+                        <tr style=" border-bottom: 1px solid 080808; width: 10px ; height: 50px "><td style="	border:1px solid #4878fa;height: 30px;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td></tr>
+                        <tr style=" border-bottom: 1px solid 080808; width: 10px ; height: 50px "><td style="	border:1px solid #4878fa;height: 30px;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td></tr>
+                        <tr style=" border-bottom: 1px solid 080808; width: 10px; height: 50px  "><td style="	border:1px solid #4878fa;height: 30px;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td></tr>
+                        <tr style=" border-bottom: 1px solid 080808; width: 10px; height: 50px  "><td style="	border:1px solid #4878fa;height: 30px;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td></tr>
+                        </tbody>
+                      </table>
+                      <p></p>
+                      <br>
+                      <br>
+                      <table style="width: 100%; border: 1px solid #2516f3; border-collapse:collapse; text-align: center;" >
+                        <tbody>
+                        <tr>
+                            <td style="	border:1px solid #4878fa; width:10%" >Vị trí răng</td>
+                            <td style="	border:1px solid #4878fa; width:40%">Chẩn đoán</td>
+                            <td style="	border:1px solid #4878fa; width:10%">Chi phí</td>
+                            <td style="	border:1px solid #4878fa; width:10%" >Chi phí giảm</td>
+                            <td style="	border:1px solid #4878fa; width:10%">Thành tiền</td>
+                        </tr>
+                        <tr style=" border-bottom: 1px solid 080808; width: 10px; height: 50px "><td style="	border:1px solid #4878fa;height: 30px;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td></tr>
+                        <tr style=" border-bottom: 1px solid 080808; width: 10px; height: 50px  "><td style="	border:1px solid #4878fa;height: 30px;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td></tr>
+                        <tr style=" border-bottom: 1px solid 080808; width: 10px ; height: 50px "><td style="	border:1px solid #4878fa;height: 30px;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td></tr>
+                        <tr style=" border-bottom: 1px solid 080808; width: 10px; height: 50px  "><td style="	border:1px solid #4878fa;height: 30px;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td></tr>
+                        <tr style=" border-bottom: 1px solid 080808; width: 10px ; height: 50px "><td style="	border:1px solid #4878fa;height: 30px;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td></tr>
+                        <tr style=" border-bottom: 1px solid 080808; width: 10px ; height: 50px "><td style="	border:1px solid #4878fa;height: 30px;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td></tr>
+                        <tr style=" border-bottom: 1px solid 080808; width: 10px ; height: 50px "><td style="	border:1px solid #4878fa;height: 30px;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td></tr>
+                        <tr style=" border-bottom: 1px solid 080808; width: 10px; height: 50px  "><td style="	border:1px solid #4878fa;height: 30px;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td></tr>
+                        <tr style=" border-bottom: 1px solid 080808; width: 10px ; height: 50px "><td style="	border:1px solid #4878fa;height: 30px;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td></tr>
+                        <tr style=" border-bottom: 1px solid 080808; width: 10px ; height: 50px "><td style="	border:1px solid #4878fa;height: 30px;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td></tr>
+                        <tr style=" border-bottom: 1px solid 080808; width: 10px ; height: 50px "><td style="	border:1px solid #4878fa;height: 30px;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td></tr>
+                        <tr style=" border-bottom: 1px solid 080808; width: 10px; height: 50px  "><td style="	border:1px solid #4878fa;height: 30px;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td></tr>
+                        <tr style=" border-bottom: 1px solid 080808; width: 10px ; height: 50px "><td style="	border:1px solid #4878fa;height: 30px;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td><td style="	border:1px solid #4878fa;"></td></tr>
+                        </tbody>
+                      </table>
+                </div>
+            </form>
+        </div>
+
+        <script src="{% static 'js/jquery-1.10.2.js' %}"></script>
+        <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+        <script src="{% static 'js/jquery-ui.js' %}"></script>
+        <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
+        <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
+    </body>
+
+    <script>
+ 
+        $(document).ready(function () {
+            var tableBn = $('#table_benhNhan').DataTable({
+                "language": {
+                    "lengthMenu": "Hiển thị _MENU_ bệnh nhân",
+                    "zeroRecords": "Không có dữ liệu - Xin lỗi",
+                    "info": "Trang _PAGE_ của _PAGES_ trang",
+                    "infoEmpty": "Không có dữ liệu",
+                    "infoFiltered": "(Lọc từ _MAX_ tổng số bản ghi)",
+                    "search": "Tìm kiếm",
+                    "paginate": {
+                        "previous": "Trang trước",
+                        "next": "Trang sau",
+                    }
+                },
+                "columnDefs": [{
+                    "targets": -1,
+                    "data": null,
+                    "defaultContent": "<button>Chọn</button>"
+                }]
+            });
+            var tableBs = $('#table_bacSi').DataTable({
+                "language": {
+                    "lengthMenu": "Hiển thị _MENU_ bác sĩ",
+                    "zeroRecords": "Không có dữ liệu - Xin lỗi",
+                    "info": "Trang _PAGE_ của _PAGES_ trang",
+                    "infoEmpty": "Không có dữ liệu",
+                    "infoFiltered": "(Lọc từ _MAX_ tổng số bản ghi)",
+                    "search": "Tìm kiếm",
+                    "paginate": {
+                        "previous": "Trang trước",
+                        "next": "Trang sau",
+                    }
+                },
+                "columnDefs": [{
+                    "targets": -1,
+                    "data": null,
+                    "defaultContent": "<button>Chọn</button>"
+                }]
+            });
+
+            $('#table_bacSi tbody').on('click', 'button', function () {
+                var data = tableBs.row($(this).parents('tr')).data();
+                $("#yeuCauBacSi").val(data[1])
+                $("#hiden_id_bs").val(data[0])
+                $('#timBacSy').modal('toggle');
+            });
+
+            $('#table_benhNhan tbody').on('click', 'button', function () {
+                var data = tableBn.row($(this).parents('tr')).data();
+                chonBenhNhan(data[1])
+            });
+
+            function chonBenhNhan(id_benhNhan) {
+                $.ajax({
+                    type: "GET",
+                    url: "ajax_chonBenhNhan",
+                    data: {
+                        'id_benhNhan': id_benhNhan,
+                    },
+                    success: function (parsedData) {
+                        var obj = JSON.parse(parsedData);
+                        console.log(obj[0])
+                        $("#idBenhNhanServer").val(obj[0]["pk"])
+                        $("#maHoSo").val(obj[0]["fields"]["ma_ho_so"])
+                        $("#ho").val(obj[0]["fields"]["ho_benh_nhan"])
+                        $("#tenDem").val(obj[0]["fields"]["chu_lot_benh_nhan"])
+                        $("#ten").val(obj[0]["fields"]["ten_bn"])
+                        date = obj[0]["fields"]["ngay_sinh_benh_nhan"]
+                        var dateParts = date.split("-");
+
+                        dmy = dateParts[2] + "/" + dateParts[1] + "/" + dateParts[0]
+                        
+                        $("#ngaySinh").val(dmy)
+                        $("#gioiTinh").val(obj[0]["fields"]["gioi_tinh_benh_nhan"])
+                        $("#yeuCauBacSi").val(obj[0]["fields"]["ho_ten_nha_si"])
+                        $("#soDienThoai").val(obj[0]["fields"]["so_dien_thoai"])
+                        $("#diaChi").val(obj[0]["fields"]["dia_chi"])
+                        $("#thoiGianKham ").val(obj[0]["fields"]["thoi_gian_kham"])
+                        $("#ghiChu ").val(obj[0]["fields"]["ghi_chu"])
+                        $("#hiden_id_bs").val(obj[0]["fields"]["ma_so_nha_si"])
+                        $("#nd_canh_bao").val(obj[0]["fields"]["canh_bao_suc_khoe"])
+                        $("#nd_di_ung").val(obj[0]["fields"]["di_ung"])
+                        $("#nd_trieu_chung").val(obj[0]["fields"]["trieu_chung"])
+                        
+                        dateTN = obj[0]["fields"]["kham_tu_ngay"]
+                        var datePartsTN = dateTN.split("-");
+                        tu_ngay = datePartsTN[2] + "/" + datePartsTN[1] + "/" + datePartsTN[0]
+                        $("#tuNgay ").val(tu_ngay)
+                        tsbdata = obj[0]["fields"]["cb_tc_du"]
+                        var tsb = tsbdata.split(",");
+                        for (i = 0; i < tsb.length; i++) {
+                            key = "#" + tsb[i].trim()
+                            $(key).prop("checked", true);
+                        }
+                        $('#timBenhNhan').modal('toggle');
+                    }
+                });
+            }
+
+            $("#timBenhNhan").click(function () {
+                $(":checkbox").attr("checked", false);
+            });
+
+            $("#ngaySinh").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "1930:2050",
+                dateFormat: 'dd/mm/yy',
+                onSelect: function (dateText) {
+                    $("#ngaySinh").val(dateText);
+                },
+                monthNames: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'], // set month names
+                monthNamesShort: ['Thg 1', 'Thg 2', 'Thg 3', 'Thg 4', 'Thg 5', 'Thg 6', 'Thg 7', 'Thg 8', 'Thg 9', 'Thg 10', 'Thg 11', 'Thg 12'], // set short month names
+                dayNames: ['Chủ nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'], // set days names
+                dayNamesShort: ['CN', 'Th2', 'Th3', 'Th4', 'Th5', 'Th6', 'Th7'], // set short day names
+                dayNamesMin: ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'], // set more short days names
+                dateFormat: 'dd/mm/yy' // set format date
+            });
+
+            $("#tuNgay").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "2021:2050",
+                dateFormat: 'dd/mm/yy',
+                onSelect: function (dateText) {
+                    $("#tuNgay").val(dateText);
+                },
+                monthNames: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'], // set month names
+                monthNamesShort: ['Thg 1', 'Thg 2', 'Thg 3', 'Thg 4', 'Thg 5', 'Thg 6', 'Thg 7', 'Thg 8', 'Thg 9', 'Thg 10', 'Thg 11', 'Thg 12'], // set short month names
+                dayNames: ['Chủ nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'], // set days names
+                dayNamesShort: ['CN', 'Th2', 'Th3', 'Th4', 'Th5', 'Th6', 'Th7'], // set short day names
+                dayNamesMin: ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'], // set more short days names
+                dateFormat: 'dd/mm/yy' // set format date
+            });
+
+            function luuThongTin() {
+                $.ajax({
+                    type: "GET",
+                    url: "luuThongTinBenhNhan",
+                    data: {
+                        'ma_ho_so': $("#maHoSo").val(),
+                        'ho': $("#ho").val(),
+                        'ten_dem': $("#tenDem").val(),
+                        'ten': $("#ten").val(),
+                        'ngay_sinh': $("#ngaySinh").val(),
+                        'gioi_tinh': $("#gioiTinh").val(),
+                        'so_dien_thoai': $("#soDienThoai").val(),
+                        'dia_chi': $("#diaChi").val(),
+                        'ma_so_bac_si': $("#hiden_id_bs").val(),
+                        'ten_bac_si': $("#yeuCauBacSi").val(),
+                        'thoi_gian_tu': $("#tuNgay").val(),
+                        'thoi_gian_kham': $("#thoiGianKham").val(),
+                        'ghi_chu': $("#ghiChu").val(),
+                        'tien_su_benh': $("#tsbenh").val(),
+                        'noi_dung_kham': $("#arr_tc").val(),
+                        'id_benh_nhan': $("#idBenhNhanServer").val(),
+                        'nd_canh_bao': $("#nd_canh_bao").val(),
+                        'nd_di_ung': $("#nd_di_ung").val(),
+                        'nd_trieu_chung': $("#nd_trieu_chung").val(),
+                        
+                    },
+                    success: function (parsedData) {
+                       if (parsedData["id_save"] == 1) {
+                            $("#idBenhNhanServer").val(parsedData["id_benh_nhan_server"])
+                            alert("Thông tin bệnh nhân đã được lưu - thêm mới")
+                        } else if (parsedData["id_save"] == 2) {
+                            $("#idBenhNhanServer").val(parsedData["id_benh_nhan_server"])
+                            alert("Thông tin bệnh nhân đã được lưu - cập nhật")
+                        }else{
+                            $("#idBenhNhanServer").val(0)
+                            alert("Lưu thông tin không thành công")
+                        }
+                    }
+                });
+            }
+            
+            $("#btnInPhieu").click(function () {
+                id_sv =  $("#idBenhNhanServer").val()
+                if(id_sv !=0){
+                    var divContents = $("#dvContainer").html();
+                    var printWindow = window.open('', '', 'height=400,width=800');
+                    printWindow.document.write('<html><head><title></title>');
+                    printWindow.document.write('</head><body >');
+                    printWindow.document.write(divContents);
+                    printWindow.document.write('</body></html>');
+                    printWindow.document.close();
+                    printWindow.print();
+                }else{
+                    alert("Lưu thông tin bệnh nhân trước khi in phiếu")
+                }
+            });
+    
+            $( "#btnInPhieu" ).mouseover(function() {
+                fillDataToPrint()
+            });
+
+            function fillDataToPrint(){
+                hoTenBenhNhan = $("#ho").val() + " " + $("#tenDem").val() + " " + $("#ten").val()
+                ngaySinh = $("#ngaySinh").val()
+                gioiTinh = $("#gioiTinh option:selected" ).text();
+                diaChi = $("#diaChi").val()
+                soDienThoai = $("#soDienThoai").val()
+                ngayKham = $("#tuNgay").val()
+                bacSi = $("#yeuCauBacSi").val()
+                canhBao = $("#nd_canh_bao").val()
+                diUng = $("#nd_di_ung").val()
+                trieuChung = $("#nd_trieu_chung").val()
+                maHoSo =  $("#maHoSo").val()
+
+                document.getElementById("ho_ten_pr").innerHTML="<b>" + hoTenBenhNhan + "</b>";
+                document.getElementById("ngay_sinh_pr").innerHTML=ngaySinh;
+                document.getElementById("gioi_tinh_pr").innerHTML=gioiTinh;
+                document.getElementById("dia_chi_pr").innerHTML=diaChi;
+                document.getElementById("so_dien_thoai_pr").innerHTML=soDienThoai;
+                document.getElementById("ngay_kham_pr").innerHTML=ngayKham;
+                document.getElementById("bac_si_pr").innerHTML=bacSi;
+                document.getElementById("cb_sk_pr").innerHTML=canhBao;
+                document.getElementById("du_pr").innerHTML=diUng;
+                document.getElementById("tc_pr").innerHTML=trieuChung;
+                document.getElementById("ma_ho_so_pr").innerHTML="<b>" + maHoSo + "</b>";
+            }
+
+            $("#dangKyKhamBenh").mouseover(function () {
+                getCheckedIds()
+                var sList = "";
+                $('input[type=checkbox]').each(function () {
+                    if (this.checked)
+                        sList += $(this).val() + ", "
+                });
+
+                // alert(sList)
+                $("#tsbenh").val(sList.substring(0, sList.length - 1))
+
+                str_tc = ""
+                $('.trieu_chung:checked').each(function () {
+                    str_tc += $(this).val() + ".";
+                });
+                // alert(str_tc)
+                $("#arr_tc").val(str_tc)
+            // console.log(arr)
+            });
+
+            function getCheckedIds() {
+                var checkedCb = document.querySelectorAll('#cbsk input[type="checkbox"]:checked');
+                var id_cb = "";
+                for (var i = 0; i < checkedCb.length; i++){
+                    id_cb = id_cb + checkedCb[i].name + ", ";
+                }
+                var checkedDu = document.querySelectorAll('#diung input[type="checkbox"]:checked');
+                var ids_du = "";
+                for (var i = 0; i < checkedDu.length; i++){
+                    ids_du = ids_du + checkedDu[i].name+ ", "
+                }
+                var checkedTc = document.querySelectorAll('#trieuchung input[type="checkbox"]:checked');
+                var ids_tc = [];
+                for (var i = 0; i < checkedTc.length; i++){
+                    ids_tc = ids_tc + checkedTc[i].name+ ", ";
+                }
+                $("#nd_canh_bao").val(id_cb.slice(0, -2))
+                $("#nd_di_ung").val(ids_du.slice(0, -2))
+                $("#nd_trieu_chung").val(ids_tc.slice(0, -2))
+            }
+            
+            $("#dangKyKhamBenh").click(function () {
+                ho =  $("#ho").val()
+                ten = $("#ten").val()
+                if(ho != "" && ten !=""){
+                    luuThongTin()
+                }else{
+                    alert("Chưa nhập thông tin bệnh nhân")
+                }
+            });
+
+            $("#btnLamMoi").click(function () {
+                location.reload();
+            });
+        });
+
+    </script>
+
+</html>
